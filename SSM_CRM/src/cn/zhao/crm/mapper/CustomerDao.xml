@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.zhao.crm.mapper.CustomerDao">	
+	
+	<!-- //根据查询条件查询总条目
+	public Integer queryCountByQueryVo(QueryVo vo);
+	private String custName; //客户名称
+	private String custSource; //客户来源
+	private String custIndustry; //所属行业
+	private String custLevel; //客户级别
+	-->
+	<select id="queryCountByQueryVo" parameterType="QueryVo" resultType="Integer">
+		select count(1) from customer
+		<where>
+			<if test="custName!=null and custName!=''">
+				cust_name like '%${custName}%'
+			</if>
+			<if test="custSource!=null and custSource!=''">
+				and cust_source = #{custSource}
+			</if>
+			<if test="custIndustry!=null and custIndustry!=''">
+				and cust_industry = #{custIndustry}
+			</if>
+			<if test="custLevel!=null and custLevel!=''">
+				and cust_level = #{custLevel}
+			</if>
+		</where>
+	</select>
+	
+	<!-- //根据查询条件查询分页查询
+	public Page<Customer> selectCustomerByQueryVo(QueryVo vo); -->
+	<select id="selectCustomerByQueryVo" parameterType="QueryVo" resultType="Customer">
+		select * from customer
+		<where>
+			<if test="custName!=null and custName!=''">
+				cust_name like '%${custName}%'
+			</if>
+			<if test="custSource!=null and custSource!=''">
+				and cust_source = #{custSource}
+			</if>
+			<if test="custIndustry!=null and custIndustry!=''">
+				and cust_industry = #{custIndustry}
+			</if>
+			<if test="custLevel!=null and custLevel!=''">
+				and cust_level = #{custLevel}
+			</if>
+		</where>
+		limit #{start},#{size}
+	</select>
+	
+	<!-- //根据ID查询对象
+	public Customer selectCustomerByID(Integer id); -->
+	<select id="selectCustomerByID" parameterType="Integer" resultType="Customer">
+		select * from customer
+		<where>
+			cust_id = #{id}
+		</where>
+	</select>
+	
+	<!-- 	//根据Id修改对象
+	public void updateCustomerByID(Integer id); -->
+	<select id="updateCustomerByID" parameterType="Integer">
+		update customer
+		SET
+		<if test="cust_name !=null and cust_name != ''">
+			`cust_name` = #{cust_name},
+		</if>
+		<if test="cust_user_id !=null">
+			`cust_user_id` = #{cust_user_id},
+		</if>
+		<if test="cust_create_id !=null">
+			`cust_create_id` = #{cust_create_id},
+		</if>
+		<if test="cust_source !=null and cust_source != ''">
+			`cust_source` = #{cust_source},
+		</if>
+		<if test="cust_industry !=null and cust_industry != ''">
+			`cust_industry` = #{cust_industry},
+		</if>
+		<if test="cust_level !=null and cust_level != ''">
+			`cust_level` = #{cust_level},
+		</if>
+		<if test="cust_linkman !=null and cust_linkman != ''">
+			`cust_linkman` = #{cust_linkman},
+		</if>
+		<if test="cust_phone !=null and cust_phone != ''">
+			`cust_phone` = #{cust_phone},
+		</if>
+		<if test="cust_mobile !=null and cust_mobile != ''">
+			`cust_mobile` = #{cust_mobile},
+		</if>
+		<if test="cust_zipcode !=null and cust_zipcode != ''">
+			`cust_zipcode` = #{cust_zipcode},
+		</if>
+		<if test="cust_address !=null and cust_address != ''">
+			`cust_address` = #{cust_address},
+		</if>
+		`cust_createtime` = NOW()
+		WHERE
+		(`cust_id` = #{cust_id});
+	</select>
+	
+	<select id="deleteCustomerByID" parameterType="Integer">
+		delete from customer where cust_id = #{id}
+	</select>
+</mapper>
